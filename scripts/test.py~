@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import rospy
+from msl_skycrane_description.msg import CmdMotorPower
+
+
+def talker():
+    pub = rospy.Publisher('/skycrane/CmdMotorPower', CmdMotorPower, queue_size=10)
+    rospy.init_node('talker', anonymous=True)
+    rate = rospy.Rate(10)  # 10hz
+    now = rospy.Time.now()
+    rospy.loginfo("Current time %i %i", now.secs, now.nsecs)
+    rate.sleep()
+    power = CmdMotorPower()
+    power.landing_engine00 = 00
+    power.landing_engine01 = 20
+    power.landing_engine10 = 100
+    power.landing_engine11 = 100
+    power.landing_engine20 = 100
+    power.landing_engine21 = 100
+    power.landing_engine30 = 100
+    power.landing_engine31 = 100
+    rospy.loginfo(power)
+    pub.publish(power)
+    rate.sleep()
+
+    # while not rospy.is_shutdown():
+        # hello_str = "hello world %s" % rospy.get_time()
+        # rospy.loginfo(hello_str)
+        # pub.publish(hello_str)
+
+
+if __name__ == '__main__':
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        pass
